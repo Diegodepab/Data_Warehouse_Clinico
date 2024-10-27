@@ -1,6 +1,20 @@
-assets/*
-!assets/.gitignore
-protected/runtime/*
-!protected/runtime/.gitignore
-protected/data/*.db
-themes/classic/views/
+# Ignorar archivos de LaTeX
+*.aux
+*.bbl
+*.blg
+*.log
+*.toc
+*.out
+*.run.xml
+*.bcf
+*.fdb_latexmk
+*.fls
+
+
+# Ignorar archivos temporales de editores
+*~ 
+*.swp
+*.swo
+
+# Ignorar directorios de compilación
+build/
