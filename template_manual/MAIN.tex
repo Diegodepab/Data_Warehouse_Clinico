@@ -6,7 +6,11 @@
 \usepackage{subfiles}           % Para manejar subarchivos
 \usepackage{hyperref}           % Para enlaces
 \usepackage{listings}           % Para código fuente (ajusta lenguaje)
-\usepackage[backend=biber]{biblatex}  % Para bibliografía
+\usepackage[style=numeric]{biblatex}  % Carga de biblatex con el estilo numérico
+
+\addbibresource{references.bib}  % Archivo de bibliografía (asegúrate de que el nombre del archivo sea correcto)
+
+
 \usepackage{geometry}           % Para ajustar márgenes
 
 % Ajustes de márgenes
@@ -19,7 +23,7 @@
 	twoside          % Para documentos a dos caras
 }
 
-\addbibresource{references.bib}  % Archivo de bibliografía
+
 \graphicspath{{images/}{../images/}} % Ruta para imágenes
 
 \begin{document}
@@ -44,27 +48,60 @@
 	
 	\section{Fundamentos y Conceptos Clave de los Data Warehouses en el Ámbito Clínico}
 	
-	Un \textbf{data warehouse} (DW) es un sistema diseñado para la recolección, almacenamiento y análisis de grandes volúmenes de datos provenientes de diferentes fuentes. En el ámbito clínico, los data warehouses son esenciales para integrar, gestionar y analizar datos de salud, proporcionando una visión unificada que apoya la toma de decisiones clínicas, la investigación y la mejora de la calidad de atención.
+	Un \textbf{data warehouse} (almacén de datos) es un sistema diseñado para la recolección, almacenamiento y análisis de grandes volúmenes de datos provenientes de diversas fuentes. Esta plataforma reúne diversas tecnologías y componentes aprovechando al máximo los datos. Permite almacenar una gran cantidad de datos, así como también su tratamiento y análisis. El objetivo es \textbf{transformar los datos brutos en informaciones útiles}, y volverlos disponibles y accesibles para los usuarios \cite{Portal2017}.
 	
-	\subsection{Estructura General de un Data Warehouse}
+	La función de un data warehouse es actuar como un repositorio centralizado donde se recopilan datos de múltiples fuentes, como bases de datos transaccionales, sistemas ERP o archivos externos. Estos datos pueden ser estructurados (tablas relacionales), semiestructurados (como archivos XML o JSON) o no estructurados (texto libre, imágenes)\cite{Portal2017}.
 	
-	La estructura de un data warehouse se puede descomponer en varias capas que permiten la organización y el acceso efectivo a los datos. Estas capas incluyen:
+	Una vez los datos llegan al data warehouse, pasan por un proceso de \textbf{ETL} (Extracción, Transformación y Carga), donde son limpiados, organizados y transformados para su análisis. Los usuarios pueden acceder a estos datos mediante herramientas de \textbf{Business Intelligence} (BI), consultas SQL o visualizaciones interactivas.
 	
-	\begin{itemize}
-		\item \textbf{Capa de Fuente de Datos:} Esta capa incluye todas las fuentes de datos de origen, que pueden ser bases de datos clínicas, sistemas de información de salud (HIS), registros electrónicos de salud (EHR), sistemas de laboratorio, y otras fuentes de datos como encuestas y dispositivos de monitoreo de pacientes. Los datos pueden ser estructurados o no estructurados y pueden requerir procesos de limpieza y transformación antes de ser cargados en el data warehouse.
+	Al centralizar la información, las organizaciones obtienen una visión completa y coherente de sus datos, lo que facilita la toma de decisiones basadas en hechos. Además, el data warehouse habilita técnicas de \textbf{data mining}, que permiten descubrir patrones ocultos y tendencias para mejorar estrategias comerciales o de operación\cite{kimball2013}.
+	
+	En el ámbito clínico, los \textbf{sistemas de información sanitaria} (SIS) recopilan volúmenes crecientes de datos provenientes de la atención médica rutinaria. Esta fuente de \textbf{datos del mundo real} (RWD, por sus siglas en inglés) ofrece un gran potencial para mejorar la calidad de la atención médica. Por un lado, estos datos aportan beneficios directos al paciente —usos primarios— al ser fundamentales para el desarrollo de la medicina personalizada. Al mismo tiempo, brindan beneficios indirectos —usos secundarios— al acelerar y mejorar la generación de conocimiento sobre patologías, condiciones de uso de productos y tecnologías sanitarias, así como la evaluación de su seguridad, eficacia y utilidad en la práctica diaria. Estos datos también son útiles para medir el impacto organizacional de las tecnologías de salud. El \textbf{manejo eficiente de grandes volúmenes de datos} a través de un data warehouse es una de las ventajas más importantes que permite maximizar el uso de esta información para mejorar los resultados en salud.
+	
+	
+	\subsection{Fases del Flujo de Datos en un Clinical Data Warehouse (CDW)}
+	
+	El \textbf{Clinical Data Warehouse (CDW)} es una infraestructura que permite consolidar datos provenientes de uno o varios \textbf{Sistemas de Información Médica} (HIS, por sus siglas en inglés) en formatos homogéneos, independientemente del marco organizativo o del origen de los datos. Esta estructura es esencial para facilitar la reutilización de la información en diversos contextos como la gestión, la investigación y la atención médica. \cite{doutreligne2023}
+	
+	La \textbf{Figura \ref{fig:Flujo}} ilustra las cuatro fases clave del flujo de datos que conforman un CDW, desde la recopilación de las fuentes originales hasta los usos finales, destacando el proceso de transformación e integración de los datos.
+	
+	\begin{figure}[h!]
+		\includegraphics[width=1\textwidth]{image/Flujo.jpg}
+		\caption{Cuatro pasos del flujo de datos del Sistema de Información Hospitalaria: (1) recopilación, (2) transformaciones y (3) aprovisionamiento. CDW, almacén de datos clínicos.\cite{doutreligne2023}}
+		\label{fig:Flujo}
+	\end{figure}
+	
+	\begin{enumerate}
+		\item \textbf{Recopilación (Collection)}  
+		La primera fase consiste en extraer los datos de las distintas fuentes que componen el HIS. Estas fuentes pueden incluir datos administrativos, prescripciones de medicamentos, mediciones fisiológicas, resultados de laboratorio, formularios de enfermería, entre otros. El objetivo principal es capturar la mayor variedad de datos posibles para que el CDW sirva como un repositorio central que refleje de manera precisa la información clínica almacenada en los sistemas hospitalarios. Cada una de estas fuentes puede estar almacenada en diferentes formatos, lo que subraya la necesidad de normalización en las fases posteriores.
 		
-		\item \textbf{Capa de Integración:} En esta capa se lleva a cabo el proceso de \textit{ETL} (Extracción, Transformación y Carga). La extracción implica la obtención de datos desde diversas fuentes; la transformación se ocupa de la normalización y consolidación de datos, asegurando que los datos estén en un formato compatible y útil para el análisis; finalmente, la carga consiste en introducir los datos transformados en el data warehouse.
+		\item \textbf{Transformación (Transformation)}  
+		Tras la recopilación, los datos pasan por un proceso de transformación donde se integran y armonizan para asegurar su coherencia. En esta fase se distinguen varias etapas clave:  
+		\begin{itemize}
+			\item \textit{Integración de fuentes}: Los datos de diferentes bases son unificados en una base central.  
+			\item \textit{Desduplicación de identificadores}: Se eliminan las duplicaciones y se normalizan los identificadores que se puedan repetir en diversas fuentes.  
+			\item \textit{Estandarización}: Un modelo de datos único, independiente de los sistemas de origen, asegura que los datos se almacenen y estructuren bajo un esquema común. Este proceso es crucial para asegurar la interoperabilidad y puede incluir la adopción de nomenclaturas estándar como SNOMED CT o LOINC.  
+			\item \textit{Pseudonimización}: Con el fin de proteger la privacidad del paciente, los datos sensibles son anonimizados mediante técnicas de pseudonimización, eliminando o codificando cualquier información directamente identificativa.
+		\end{itemize}
 		
-		\item \textbf{Capa de Almacenamiento:} Esta capa alberga el repositorio central donde se almacenan los datos. Generalmente, se utilizan modelos de datos multidimensionales, que facilitan el análisis en diferentes dimensiones, como el tiempo, el paciente y la localización. Esto permite a los analistas realizar consultas complejas y obtener insights significativos de los datos clínicos.
+		\item \textbf{Provisión (Provisioning)}  
+		Una vez que los datos han sido transformados, se almacenan en una base central y se dividen en subconjuntos específicos o \textit{datamarts}, que permiten su reutilización tanto en usos primarios como secundarios. Estos \textit{datamarts} pueden estar orientados a diferentes objetivos, como estudios específicos, gestión administrativa o aplicaciones clínicas. El uso de \textit{datamarts} especializados optimiza el acceso a los datos y facilita la creación de \textit{cohortes}, la utilización de \textit{herramientas de visualización}, así como el acceso a un \textit{entorno de codificación} y otras aplicaciones.
 		
-		\item \textbf{Capa de Presentación:} En esta capa, se utilizan herramientas de visualización y análisis para presentar los datos a los usuarios finales. Esto incluye dashboards, informes y herramientas de minería de datos que permiten a los clínicos, administradores y analistas explorar los datos y extraer conclusiones. 
-		
-		\item \textbf{Capa de Usuario:} Finalmente, esta capa incluye a los usuarios que interactúan con el sistema a través de interfaces gráficas o herramientas de consulta. Esta capa es fundamental, ya que permite a los profesionales de la salud y otros interesados acceder a la información de manera sencilla y significativa.
-	\end{itemize}
+		\item \textbf{Usos (Usages)}  
+		En esta última fase, los usuarios del CDW pueden acceder a los datos ya procesados y almacenados en los \textit{datamarts} a través de aplicaciones y herramientas especializadas. Los principales usos incluyen:
+		\begin{itemize}
+			\item \textit{Creación de cohortes}: Selección de subpoblaciones específicas basadas en criterios clínicos para su análisis en estudios de investigación.  
+			\item \textit{Herramientas de visualización}: Plataformas que permiten explorar los datos mediante gráficos, tablas y otras representaciones visuales para facilitar el análisis.  
+			\item \textit{Entornos de codificación}: Espacios diseñados para realizar análisis avanzados y procesar los datos de manera eficiente mediante técnicas de \textit{machine learning} o análisis estadístico.  
+			\item \textit{Otras aplicaciones}: Los datos también pueden ser reutilizados en diversas aplicaciones, desde la mejora de procesos clínicos hasta la evaluación de nuevas tecnologías o tratamientos.
+		\end{itemize}
+	\end{enumerate}
+	
+	
 	
 	\subsection{Relevancia en el Manejo de Datos de Salud}
 
-	La relevancia de los data warehouses en el manejo de datos de salud radica en su capacidad para ofrecer un enfoque holístico y basado en datos en la atención médica. Algunos beneficios clave incluyen:
+	La relevancia de los data warehouses en el manejo de datos de salud radica en su capacidad para ofrecer un enfoque holístico y basado en datos en la atención médica. Algunos beneficios clave incluyen\cite{turcan2022}:
 	
 	\begin{itemize}
 		\item \textbf{Mejora en la Toma de Decisiones:} Los data warehouses permiten a los clínicos acceder a datos integrados y actualizados, lo que mejora la calidad de la atención al paciente. Con datos precisos y en tiempo real, los médicos pueden tomar decisiones informadas sobre diagnósticos y tratamientos.
@@ -79,7 +116,6 @@
 		
 	\end{itemize}
 
-	En resumen, los data warehouses son fundamentales en el ámbito clínico para la integración y análisis de datos de salud. Su capacidad para consolidar información de diversas fuentes y presentar análisis significativos no solo mejora la calidad de la atención al paciente, sino que también impulsa la investigación y el avance en la atención médica.
 
 	
 	\section{Estándares de Interoperabilidad en Datos Clínicos}
@@ -87,14 +123,23 @@
 	
 	\section{Arquitectura del Data Warehouse Clínico}
 	
-	La arquitectura de un \textbf{data warehouse clínico} es fundamental para la integración, el almacenamiento y el análisis de datos de salud. Esta arquitectura se compone de varias capas que interactúan entre sí para garantizar que los datos sean accesibles, confiables y utilizables para la toma de decisiones clínicas. A continuación, se describen las principales capas y componentes de esta arquitectura.
+	La arquitectura de un \textbf{data warehouse clínico} es fundamental para el análisis de datos de salud. Esta arquitectura se compone de varias capas que interactúan entre sí para garantizar que los datos sean accesibles, confiables y utilizables para la toma de decisiones clínicas. A continuación, se explican las capas y los componentes esenciales de esta arquitectura
 	
 	\subsection{Capas de la Arquitectura del Data Warehouse}
+
+	La \textbf{Figura \ref{fig:Arqui}} ilustra una simplificación de la arquitectura típica de un data warehouse clínico se puede dividir en las siguientes capas:
 	
-	La arquitectura típica de un data warehouse clínico se puede dividir en las siguientes capas:
+	
+	\begin{figure}[h!]
+		\centering % Acentúa la figura al centro
+		\includegraphics[width=1\textwidth]{image/Arquitectura.jpg}
+		\caption{5 puntos de la arquitectura del Data Warehouse: (1) Fuentes de Datos, (2) Carga (ETL), (3) Warehouse o almacenamiento, (4) Procesamiento y (5) Presentación.} % Asegúrate de cerrar el caption correctamente
+		\label{fig:Arqui}
+	\end{figure}
+	
 	
 	\begin{itemize}
-		\item \textbf{Capa de Fuentes de Datos:} Esta es la base del data warehouse y está compuesta por diversas fuentes de datos clínicas, incluyendo:
+		\item \textbf{Capa de Fuentes de Datos:} Esta es la base del data warehouse y está compuesta por diversas fuentes de datos clínicas, como lo pueden ser:
 		\begin{itemize}
 			\item \textit{Registros Electrónicos de Salud (EHR):} Documentos digitales que contienen información sobre la salud de los pacientes.
 			\item \textit{Sistemas de Información de Salud (HIS):} Plataformas que integran y gestionan datos clínicos y administrativos.
@@ -130,25 +175,8 @@
 		\end{itemize}
 	\end{itemize}
 	
-	\subsection{Componentes Clave de un Data Warehouse Clínico}
 	
-	Aparte de las capas mencionadas, existen varios componentes que son esenciales para el funcionamiento eficaz de un data warehouse clínico:
-	
-	\begin{itemize}
-		\item \textbf{Data Governance:} Se refiere a las políticas y procesos que aseguran la calidad, privacidad y seguridad de los datos. Esto incluye la definición de roles y responsabilidades en la gestión de datos, así como la conformidad con regulaciones como HIPAA y GDPR.
-		
-		\item \textbf{Data Quality Management:} Herramientas y procesos diseñados para asegurar que los datos almacenados sean precisos, completos y confiables. Esto incluye la limpieza de datos, la validación y el monitoreo continuo de la calidad de los datos.
-		
-		\item \textbf{Seguridad de Datos:} Medidas implementadas para proteger la confidencialidad e integridad de los datos clínicos. Esto puede incluir autenticación de usuarios, cifrado de datos y control de acceso basado en roles.
-		
-		\item \textbf{Interoperabilidad:} La capacidad de los sistemas de información para intercambiar y utilizar datos de manera efectiva. Esto se logra a través del uso de estándares como HL7, FHIR y otros protocolos que facilitan la comunicación entre diferentes sistemas.
-		
-		\item \textbf{Mantenimiento y Soporte:} Estrategias para garantizar la continuidad operativa del data warehouse, incluyendo la actualización de software, el mantenimiento de hardware y el soporte técnico para los usuarios.
-	\end{itemize}
-	
-	\subsection{Conclusión}
-	
-	La arquitectura de un data warehouse clínico es compleja y multifacética, diseñada para integrar, procesar y presentar datos de salud de manera que apoye la toma de decisiones clínicas y la mejora de la atención médica. Al comprender cada una de las capas y componentes que componen esta arquitectura, las organizaciones de salud pueden optimizar sus sistemas de gestión de datos y, por ende, mejorar los resultados clínicos y la eficiencia operativa.
+	Además de la arquitectura, también se deben considerar otros componentes clave para asegurar la calidad y eficiencia de un data warehouse clínico. Esto incluye la gobernanza de datos, que establece políticas para garantizar la calidad y privacidad de la información; la gestión de calidad de datos, que utiliza herramientas para asegurar la precisión y completitud de los datos mediante limpieza y monitoreo; la seguridad de datos, que protege la confidencialidad e integridad de la información a través de autenticación y cifrado; la interoperabilidad, que permite el intercambio efectivo de datos entre sistemas mediante estándares como HL7 y FHIR; y el mantenimiento y soporte, que asegura la continuidad operativa mediante actualizaciones y soporte técnico.
 	
 	
 	\section{Proceso ETL para la Integración de Datos Clínicos}
@@ -167,6 +195,9 @@
 	Ofrece un resumen de los puntos más importantes y discute posibles desarrollos futuros en la interoperabilidad y los data warehouses clínicos.
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	\section{Bibliografía}
+	\printbibliography
+	
 	%% Back Cover
 	\includepdf[noautoscale=true, width=\paperwidth]{backcover.pdf}
 	
