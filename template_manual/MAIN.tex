@@ -7,9 +7,8 @@
 \usepackage{hyperref}           % Para enlaces
 \usepackage{listings}           % Para código fuente (ajusta lenguaje)
 \usepackage{verbatim}
-\usepackage[style=numeric]{biblatex}  % Carga de biblatex con el estilo numérico
-
-\addbibresource{references.bib}  % Archivo de bibliografía (asegúrate de que el nombre del archivo sea correcto)
+\usepackage[backend=bibtex,style=numeric]{biblatex} % Para citas numéricas
+\addbibresource{references.bib} % Cargar archivo .bib
 
 
 \usepackage{geometry}           % Para ajustar márgenes
@@ -125,11 +124,11 @@
 
 
 	
-	\section{Estándares de Interoperabilidad en Datos Clínicos}\cite{meditecsInteroperabilidad}
+	\section{Estándares de Interoperabilidad en Datos Clínicos}
 	
 	
-	El aspecto más importante de los estándares de integración de datos clínicos es la interoperabilidad para la integración efectiva en un data warehouse, ya que permite que sistemas de salud, que a menudo operan de forma independiente, puedan compartir información coherente y confiable. 
-	Permite a los profesionales de la salud y a los investigadores disponer de un acceso centralizado a la información, independientemente de las plataformas o sistemas en los que se generaron originalmente los datos.
+	El aspecto más importante de los estándares de integración de datos clínicos es la interoperabilidad para la integración efectiva en un data warehouse, ya que permite que sistemas de salud, que a menudo operan de forma independiente, puedan compartir información coherente y confiable. \cite{meditecsInteroperabilidad}
+	Permite a los profesionales de la salud y a los investigadores disponer de un acceso centralizado a la información, independientemente de las plataformas o sistemas en los que se generaron originalmente los datos.\cite{meditecsInteroperabilidad}
 	Detallaremos los estándares de integración más utilizados:
 	
 	
@@ -598,17 +597,17 @@
 	
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[width=0.8\textwidth]{image/10.png}
+		\includegraphics[width=0.5\textwidth]{image/10.png}
 		\caption{Mensaje HL7}
 		\label{fig:10}
 	\end{figure}
 	
-	\section{Conclusiones y Perspectivas Futuras en la Integración de Datos Clínicos}
+	\section{Conclusiones y Perspectivas Futuras en la Integración de Datos Clínicos y referencias}
 	Ofrece un resumen de los puntos más importantes y discute posibles desarrollos futuros en la interoperabilidad y los data warehouses clínicos.
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	\section{Bibliografía}
 	\printbibliography
+	
 	
 	%% Back Cover
 	\includepdf[noautoscale=true, width=\paperwidth]{backcover.pdf}

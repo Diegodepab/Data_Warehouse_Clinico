@@ -25,5 +25,4 @@
 \contentsline {subsubsection}{\numberline {8.2.1}Fase de extracción y transformación}{18}{subsubsection.8.2.1}%
 \contentsline {subsubsection}{\numberline {8.2.2}Transformer HL7:}{18}{subsubsection.8.2.2}%
 \contentsline {subsubsection}{\numberline {8.2.3}Carga}{19}{subsubsection.8.2.3}%
-\contentsline {section}{\numberline {9}Conclusiones y Perspectivas Futuras en la Integración de Datos Clínicos}{20}{section.9}%
-\contentsline {section}{\numberline {10}Bibliografía}{20}{section.10}%
+\contentsline {section}{\numberline {9}Conclusiones y Perspectivas Futuras en la Integración de Datos Clínicos y referencias}{20}{section.9}%
