@@ -138,10 +138,11 @@
 	
 	\subsubsection{HL7 (Health Level 7)} 
 	HL7 es uno de los estándares de interoperabilidad más utilizados en el ámbito clínico. Desarrollado por la organización Health Level Seven International. Permite el intercambio de datos entre aplicaciones de salud mediante mensajes estandarizados que contienen información crítica, como datos de pacientes, resultados de laboratorio y diagnósticos médicos. Es ampliamente adoptado en sistemas de salud debido a su capacidad para manejar grandes volúmenes de datos de forma eficaz. 
+	\vspace{5cm}
 	
 	\textbf{Ejemplo de Uso de HL7:} Un hospital necesita compartir los resultados de laboratorio de un paciente con su proveedor de atención primaria. Utilizando HL7, los resultados de laboratorio se codifican en un mensaje HL7 que contiene los campos de información relevantes, como la identificación del paciente, el tipo de prueba realizada y los resultados numéricos de la prueba.
 	
-	Un mensaje HL7 típico, con el estándar HL7 V2, podría tener un formato similar a este(12):
+	Un mensaje HL7 típico, con el estándar HL7 V2, podría tener un formato similar a este\cite{meditecsHL7}:
 	
 	\begin{verbatim}
 		MSH|^~\&|LABSYSTEM|HOSPITAL|CLINIC|12345|202410261230||ORU^R01|123|P|2.3
@@ -173,11 +174,12 @@
 		\caption{Recursos de FHIR}
 		\label{fig:1}
 	\end{figure}
-	\vspace{5cm}
+	\vspace{9cm}
 	
 	\textbf{Ejemplo de Uso de FHIR:} Imaginemos una aplicación móvil que permite a los pacientes visualizar su historial médico. Utilizando FHIR, la aplicación puede solicitar datos específicos al sistema de EHR (Electronic Health Record) del hospital en tiempo real.
 	
 	Si quisiéramos transferir un paciente de un hospital a otro, sería necesario que el json, que contiene la información del paciente tuviera algunos de los campos especificados en la imagen:
+	\vspace{1cm}
 	
 	\begin{figure}[h!]
 		\includegraphics[width=1\textwidth]{image/2.png}
@@ -394,10 +396,12 @@
 		\caption{VS recomienda estructuras del estándar de FHIR}
 		\label{fig:4}
 	\end{figure}
+	\vspace{5cm}
 	
 	En este caso escogemos el resourceType y ponemos el valor “Patient”, ya que queremos insertar un paciente en el servidor.
 	
 	Después de crear el json entero siguiendo el estándar para un json de FHIR:
+	\vspace{0.3cm}
 	
 	\begin{verbatim}
 		{
@@ -443,12 +447,10 @@
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[width=0.8\textwidth]{image/5.png}
-		\caption{Servidor de FHIR}
+		\caption{Servidor de FHIR \cite{HAPI_FHIR}}
 		\label{fig:5}
 	\end{figure}
-	\vspace{5cm}
 	
-	\cite{HAPI_FHIR}
 	Será a esta url \cite{HAPI_FHIR_Patient} a la que le lanzaremos un post para meter nuestro cliente en el servidor.
 	
 	Ponemos el json como cuerpo del mensaje.
@@ -601,6 +603,9 @@
 		\caption{Mensaje HL7}
 		\label{fig:10}
 	\end{figure}
+	\vspace{2cm}
+	
+	Y como vemos queda insertado el paciente John con Diabetes tipo 2 (utilizando el estándar de codificación de diagnóstico de SNOMED CT)
 	
 	\section{Conclusiones y Perspectivas Futuras en la Integración de Datos Clínicos y referencias}
 	Ofrece un resumen de los puntos más importantes y discute posibles desarrollos futuros en la interoperabilidad y los data warehouses clínicos.

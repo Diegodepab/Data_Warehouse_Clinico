@@ -17,12 +17,12 @@
 \contentsline {subsection}{\numberline {5.3}Carga}{14}{subsection.5.3}%
 \contentsline {section}{\numberline {6}Beneficios de la Integración de Datos Clínicos}{14}{section.6}%
 \contentsline {section}{\numberline {7}Relación con el Curso de Almacenes de Datos}{14}{section.7}%
-\contentsline {section}{\numberline {8}Ejemplos-Demo de Uso de Integración de Datos Clínicos con Estándares}{14}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Ejemplo con estándar FHIR:}{14}{subsection.8.1}%
-\contentsline {subsubsection}{\numberline {8.1.1}Extracción y Transformación}{14}{subsubsection.8.1.1}%
-\contentsline {subsubsection}{\numberline {8.1.2}Carga}{16}{subsubsection.8.1.2}%
+\contentsline {section}{\numberline {8}Ejemplos-Demo de Uso de Integración de Datos Clínicos con Estándares}{15}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Ejemplo con estándar FHIR:}{15}{subsection.8.1}%
+\contentsline {subsubsection}{\numberline {8.1.1}Extracción y Transformación}{15}{subsubsection.8.1.1}%
+\contentsline {subsubsection}{\numberline {8.1.2}Carga}{17}{subsubsection.8.1.2}%
 \contentsline {subsection}{\numberline {8.2}Ejemplo con estándar HL7:}{17}{subsection.8.2}%
 \contentsline {subsubsection}{\numberline {8.2.1}Fase de extracción y transformación}{18}{subsubsection.8.2.1}%
-\contentsline {subsubsection}{\numberline {8.2.2}Transformer HL7:}{18}{subsubsection.8.2.2}%
+\contentsline {subsubsection}{\numberline {8.2.2}Transformer HL7:}{19}{subsubsection.8.2.2}%
 \contentsline {subsubsection}{\numberline {8.2.3}Carga}{19}{subsubsection.8.2.3}%
-\contentsline {section}{\numberline {9}Conclusiones y Perspectivas Futuras en la Integración de Datos Clínicos y referencias}{20}{section.9}%
+\contentsline {section}{\numberline {9}Conclusiones y Perspectivas Futuras en la Integración de Datos Clínicos y referencias}{21}{section.9}%
