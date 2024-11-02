@@ -6,6 +6,7 @@
 \usepackage{subfiles}           % Para manejar subarchivos
 \usepackage{hyperref}           % Para enlaces
 \usepackage{listings}           % Para código fuente (ajusta lenguaje)
+\usepackage{verbatim}
 \usepackage[style=numeric]{biblatex}  % Carga de biblatex con el estilo numérico
 
 \addbibresource{references.bib}  % Archivo de bibliografía (asegúrate de que el nombre del archivo sea correcto)
@@ -44,7 +45,13 @@
 	
 	% Sections
 	\section{Introducción a la Integración de Datos Clínicos en un Data Warehouse}
-	Describe el propósito y la importancia de la integración de datos clínicos en un contexto centralizado.
+	
+	La integración de datos clínicos en un warehouse es fundamental para la centralización, normalización y accesibilidad de datos clínicos provenientes de diversas fuentes en un único repositorio  \cite{founderzDW}\cite{asteraHealthcareData}.
+	
+	La complejidad de integrar datos clínicos radica en la diversidad de los sistemas y formatos utilizados por las diferentes organizaciones de salud, como hospitales, laboratorios, y clínicas especializadas\cite{revistaMedicaManejoInformacion}. Con el fin de proponer una solución para este problema, se desarrollaron frameworks de interoperabilidad, como HL7, FHIR, SNOMED CT y LOINC, que permiten estructurar la información para su correcta integración en un data warehouse\cite{meditecsInteroperabilidad}. Este proceso asegura que los datos almacenados se mantengan consistentes y precisos\cite{founderzDW}.
+	
+	El objetivo de este trabajo es analizar cómo se estandariza la información para la integración de datos clínicos en un data warehouse, herramientas utilizadas, y el impacto de esta tecnología en la gestión y uso de la información de salud.
+	
 	
 	\section{Fundamentos y Conceptos Clave de los Data Warehouses en el Ámbito Clínico}
 	
@@ -118,8 +125,134 @@
 
 
 	
-	\section{Estándares de Interoperabilidad en Datos Clínicos}
-	Detalla los principales estándares (HL7, FHIR, SNOMED CT, LOINC) y cómo facilitan la integración y el intercambio de datos clínicos entre sistemas.
+	\section{Estándares de Interoperabilidad en Datos Clínicos}\cite{meditecsInteroperabilidad}
+	
+	
+	El aspecto más importante de los estándares de integración de datos clínicos es la interoperabilidad para la integración efectiva en un data warehouse, ya que permite que sistemas de salud, que a menudo operan de forma independiente, puedan compartir información coherente y confiable. 
+	Permite a los profesionales de la salud y a los investigadores disponer de un acceso centralizado a la información, independientemente de las plataformas o sistemas en los que se generaron originalmente los datos.
+	Detallaremos los estándares de integración más utilizados:
+	
+	
+	\subsection{Estándares de mensajería y estructura de datos:}
+	
+	Hay varias formas de estructurar la información:
+	
+	\subsubsection{HL7 (Health Level 7)} 
+	HL7 es uno de los estándares de interoperabilidad más utilizados en el ámbito clínico. Desarrollado por la organización Health Level Seven International. Permite el intercambio de datos entre aplicaciones de salud mediante mensajes estandarizados que contienen información crítica, como datos de pacientes, resultados de laboratorio y diagnósticos médicos. Es ampliamente adoptado en sistemas de salud debido a su capacidad para manejar grandes volúmenes de datos de forma eficaz. 
+	
+	\textbf{Ejemplo de Uso de HL7:} Un hospital necesita compartir los resultados de laboratorio de un paciente con su proveedor de atención primaria. Utilizando HL7, los resultados de laboratorio se codifican en un mensaje HL7 que contiene los campos de información relevantes, como la identificación del paciente, el tipo de prueba realizada y los resultados numéricos de la prueba.
+	
+	Un mensaje HL7 típico, con el estándar HL7 V2, podría tener un formato similar a este(12):
+	
+	\begin{verbatim}
+		MSH|^~\&|LABSYSTEM|HOSPITAL|CLINIC|12345|202410261230||ORU^R01|123|P|2.3
+		PID|1||123456^^^HOSPITAL^MR||Doe^John||19650215|M||2106-3^White^HL70005
+		OBR|1|12345|67890|CBC^Complete Blood Count^HL70001|202410261200|||||||
+		OBX|1|NM|59462-2^Hemoglobin^LN||13.5|g/dL|13.5-17.5|N|F
+		OBX|2|NM|718-7^White Blood Cell Count^LN||6.8|x10^3/uL|4.5-11.0|N|F
+	\end{verbatim}
+	
+	
+	
+	En este mensaje:
+	\begin{itemize}
+		\item MSH es el segmento de encabezado del mensaje.
+		\item PID contiene la información del paciente.
+		\item OBR y OBX detallan el tipo de prueba y los resultados obtenidos.
+	\end{itemize}
+	
+	Este mensaje HL7 se envía al sistema del proveedor de atención primaria, quien recibe los datos y los integra en el expediente médico del paciente de forma automatizada, permitiendo así una consulta rápida y eficiente en cualquier momento.
+	
+	
+	\subsubsection{FHIR (Fast Healthcare Interoperability Resources)} 
+	
+	FHIR es un estándar relativamente nuevo y es considerado la evolución de HL7. Diseñado por la misma organización que HL7, FHIR permite el intercambio de datos rápido y seguro utilizando formatos ás utilizados como JSON y XML. La modularidad de FHIR, a través de recursos (resources) individuales que representan entidades clínicas, como pacientes, observaciones, y procedimientos, facilita la integración de distintos tipos de datos clínicos., Permite que sistemas diversos accedan a datos precisos y estructurados en tiempo real, lo que es ideal para aplicaciones web y móviles.
+	En esta página (https://www.hl7.org/fhir/resourcelist.html) se puede encontrar que campos son necesarios dependiendo de nuestras necesidades. 
+	
+	\begin{figure}[h!]
+		\includegraphics[width=1\textwidth]{image/1.png}
+		\caption{Recursos de FHIR}
+		\label{fig:1}
+	\end{figure}
+	\vspace{5cm}
+	
+	\textbf{Ejemplo de Uso de FHIR:} Imaginemos una aplicación móvil que permite a los pacientes visualizar su historial médico. Utilizando FHIR, la aplicación puede solicitar datos específicos al sistema de EHR (Electronic Health Record) del hospital en tiempo real.
+	
+	Si quisiéramos transferir un paciente de un hospital a otro, sería necesario que el json, que contiene la información del paciente tuviera algunos de los campos especificados en la imagen:
+	
+	\begin{figure}[h!]
+		\includegraphics[width=1\textwidth]{image/2.png}
+		\caption{Campos de Paciente}
+		\label{fig:2}
+	\end{figure}
+	
+	
+	Un recurso FHIR en JSON para obtener la información de un paciente podría verse así:
+	
+	\begin{verbatim}
+		{
+			"resourceType": "Patient",
+			"id": "123",
+			"identifier": [
+			{
+				"use": "usual",
+				"system": "http://hospital.org/patient",
+				"value": "12345"
+			}
+			],
+			"name": [
+			{
+				"use": "official",
+				"family": "Doe",
+				"given": [
+				"John"
+				]
+			}
+			],
+			"gender": "male",
+			"birthDate": "1965-02-15"
+		}
+	\end{verbatim}
+	
+	Hay otros recursos como Observation (resultados de laboratorio) o MedicationRequest (ver recetas).
+	
+	\subsection{Estándares de codificación de términos:}
+	
+	Estos estándares funcionan para estandarizar los datos de diagnóstico de enfermedades y síntomas, entre otros, mediante su codificación.
+	
+	\subsubsection{SNOMED CT}
+	
+	SNOMED CT (Systematized Nomenclature of Medicine Clinical Terms) se utiliza para codificar términos clínicos de manera uniforme. Permiten describir con precisión diagnósticos, procedimientos, síntomas y otros datos clínicos en un formato estandarizado. Al usar SNOMED CT, se asegura que los términos médicos sean interpretables por diferentes sistemas y usuarios en diversas regiones y entornos \cite{sanidadSNOMEDCT}.
+	
+	\textbf{Ejemplo de Uso de SNOMED CT:} Un médico registra el diagnóstico de un paciente en su expediente electrónico, indicando que tiene diabetes tipo 2. En lugar de escribir “diabetes tipo 2” de forma libre, el sistema de EHR convierte este diagnóstico en un código SNOMED CT específico, como 44054006, que representa “diabetes mellitus tipo 2”\cite{bioportalSNOMEDCT}.
+	
+	Al registrar el diagnóstico con el código SNOMED CT:
+	
+	\begin{itemize}
+		\item Los sistemas pueden realizar búsquedas de manera uniforme; por ejemplo, todos los pacientes con 44054006 pueden ser agrupados para analizar estadísticas de prevalencia.
+		
+		\item Los profesionales médicos en distintas instituciones entienden el diagnóstico sin importar el idioma o variaciones regionales, ya que el código es único y universal.
+		
+		\item Permite realizar análisis de datos clínicos sobre enfermedades, tratamientos y evolución de pacientes, basados en términos clínicos estandarizados y consistentes.
+	\end{itemize}
+	
+	\subsubsection{LOINC}
+	
+	LOINC es un estándar utilizado principalmente para codificar resultados de laboratorio y observaciones clínicas. Cada prueba de laboratorio y observación tiene un código único en LOINC que permite compararlos de forma consistente entre distintas instituciones de salud. Esto es especialmente útil cuando los datos se centralizan en un data warehouse y se necesita comparar resultados de laboratorio obtenidos en diferentes lugares o con diferentes equipos \cite{meditecsInteroperabilidad}.
+	
+	Ejemplo de Uso de LOINC: Un laboratorio realiza un análisis de glucosa en sangre y obtiene un valor de 105 mg/dL. El resultado se codifica con el código LOINC 2345-7, que representa una “Glucosa en suero o plasma”\cite{loinc2345}.
+	
+	
+	El uso de LOINC permite que:
+	\begin{itemize}
+		\item Los resultados de glucosa en sangre se almacenan en un data warehouse con el mismo código LOINC, sin importar el hospital o laboratorio que haya realizado la prueba.
+		
+		\item Al realizar consultas y comparaciones en el data warehouse, todos los valores de glucosa se identifican por el mismo código 2345-7, permitiendo así obtener una visión coherente de los niveles de glucosa en diferentes pacientes o en el mismo paciente a lo largo del tiempo.
+		
+		\item Por ejemplo, al analizar el historial de un paciente con el código 2345-7, es posible ver la evolución de su glucosa en sangre y evaluar si ha habido mejoría o empeoramiento en sus niveles. Esto puede ayudar a ajustar tratamientos y realizar diagnósticos más precisos.
+	\end{itemize}
+	
+	
 	
 	\section{Arquitectura del Data Warehouse Clínico}
 	
@@ -181,6 +314,50 @@
 	
 	\section{Proceso ETL para la Integración de Datos Clínicos}
 	Explica las etapas de Extracción, Transformación y Carga (ETL) para normalizar y consolidar datos clínicos de diversas fuentes.
+	La integración de datos clínicos en un data warehouse requiere de un proceso ETL (Extracción, Transformación y Carga) robusto que pueda manejar la heterogeneidad de las fuentes de datos y normalizar la información para su análisis y uso posterior.
+	
+	\subsection{Extracción}
+	La etapa de extracción implica la recolección de datos desde múltiples fuentes heterogéneas, como sistemas de gestión hospitalaria (HIS), sistemas de registros médicos electrónicos (EHR), sistemas de laboratorio, y bases de datos de farmacia. Estas fuentes suelen tener estructuras de datos diferentes y utilizar estándares específicos, como HL7 o FHIR, y muchas veces incluso formatos propietarios\cite{keepcodingExtraccion}.
+	Extracción en Datos Clínicos:
+	\begin{itemize}
+		\item \textbf{Acceso a fuentes variadas:} Conectar con diferentes sistemas, incluyendo sistemas de registros médicos electrónicos, dispositivos médicos y aplicaciones clínicas.
+		
+		\item \textbf{Acceso seguro:} Asegurar que la extracción de datos cumpla con las normativas de privacidad de datos de salud (como HIPAA en EE. UU. \cite{fbiHIPAA} o GDPR en Europa \cite{comisionEUDataProtection}).
+		
+		\item \textbf{Manejo de formatos de datos:} Leer e interpretar formatos como XML, JSON, y mensajes HL7 V2, o FHIR, así como datos de bases de datos SQL y archivos CSV.
+	\end{itemize}
+	
+	\textbf{Ejemplo de Extracción en Datos Clínicos:} Un sistema de EHR contiene información de consultas médicas de pacientes en formato HL7. Para extraer esta información, el proceso ETL se conecta con el sistema de EHR mediante una interfaz segura y descarga los datos en formato HL7 V2 para luego proceder con la transformación.
+	
+	\subsection{Transformación}
+	La transformación es la etapa más compleja del proceso ETL, ya que implica la normalización y estandarización de los datos extraídos. Los datos clínicos suelen estar codificados en diferentes sistemas (ej., SNOMED CT, LOINC, ICD-10), por lo que el objetivo principal de esta fase es convertir estos datos en un formato común y unificado que permita su análisis conjunto. Esta etapa incluye varios subprocesos clave:
+	\begin{itemize}
+		\item \textbf{Estandarización de formatos:} Convertir los datos a un formato común, como JSON o CSV, y unificar estructuras y tipos de datos.
+		
+		\item \textbf{Normalización y limpieza de datos:} Corregir valores inconsistentes, eliminar duplicados y manejar valores nulos o faltantes.
+		
+		\item \textbf{Codificación:} Mapear términos médicos a un estándar de codificación unificado, como SNOMED CT para diagnósticos y LOINC para resultados de laboratorio.
+		
+		\item \textbf{Integración de datos:} Combinar datos de distintas fuentes en una estructura unificada, lo que puede implicar el mapeo de distintos campos de datos al mismo campo en el data warehouse.
+	\end{itemize}
+	
+	\textbf{Ejemplo de Transformación en Datos Clínicos:} Imaginemos que se tienen registros de diferentes laboratorios en formatos y códigos distintos. Algunos laboratorios usan términos de texto libre para describir las pruebas de laboratorio, mientras que otros utilizan LOINC. En la fase de transformación, el proceso ETL asigna códigos LOINC a las pruebas descritas en texto libre y convierte todos los registros a un mismo formato de archivo (ej., JSON o CSV) para que puedan ser integrados en el data warehouse.
+	
+	Además, durante esta etapa, los datos de un paciente con identificadores distintos en cada sistema fuente se unen mediante un identificador único (como el número de historia clínica o ID de paciente en el hospital), consolidando así el historial del paciente.
+	
+	\subsection{Carga}
+	
+	La etapa de carga implica mover los datos transformados y normalizados al data warehouse clínico, donde estarán disponibles para el análisis y consulta. En esta fase, se deben considerar aspectos como la frecuencia de actualización de los datos, el diseño del modelo de datos en el data warehouse, y el control de calidad.
+	
+	Tipos de Carga:
+	\begin{itemize}
+		\item \textbf{Carga completa:} La primera vez que se cargan los datos al data warehouse, se hace de manera completa, es decir, se carga todo el histórico de datos clínicos.
+		
+		\item \textbf{Carga incremental:} Para actualizaciones periódicas, solo se cargan los datos nuevos o los que hayan sido modificados desde la última carga, optimizando el uso de recursos y el tiempo de carga.
+	\end{itemize}
+	
+	\textbf{Ejemplo de Carga en Datos Clínicos:} Una vez que los registros de laboratorio han sido transformados y estandarizados, se insertan en el data warehouse en tablas relacionadas con los datos clínicos del paciente, como en una tabla de “Pruebas de Laboratorio”. El sistema puede configurarse para realizar cargas incrementales diarias, de forma que cualquier nuevo resultado de laboratorio se agregue automáticamente al data warehouse, permitiendo a los analistas y médicos consultar la información más reciente.
+	
 	
 	\section{Beneficios de la Integración de Datos Clínicos}
 	Enumera y detalla los beneficios clave de un data warehouse clínico: mejora en la toma de decisiones, apoyo a la investigación, análisis predictivo, etc.
@@ -188,8 +365,243 @@
 	\section{Relación con el Curso de Almacenes de Datos}
 	Analiza cómo los conceptos de la asignatura, como modelado de datos, arquitecturas de data warehouse y técnicas de ETL, se aplican en el desarrollo de un data warehouse clínico.
 	
-	\section{Ejemplos de Uso y Casos Prácticos de Integración de Datos Clínicos}
-	Proporciona ejemplos de aplicación práctica, simulando la integración de datos de un sistema de EHR en un data warehouse usando algún estándar.
+	\section{Ejemplos-Demo de Uso de Integración de Datos Clínicos con Estándares}
+	
+	
+	\subsection{Ejemplo con estándar  FHIR:}
+	En este caso lo que intentaremos es postear la información de un paciente con el estándar de datos FHIR en formato JSON en un servidor de  FHIR.
+	
+	\subsubsection{Extracción y Transformación}
+	Dado que partimos de un json y el servidor de FHIR trabaja con formato json, no hace falta transformarlo.
+	
+	Primero necesitamos crear un archivo recurso FHIR y un json que cumpla con los estándares de mensaje de FHIR, por lo que para ello, primero nos descargaremos un archivo que nos ayudará a crear el json de un paciente. 
+	
+	Iremos al siguiente enlance nos iremos a https://hl7.org/fhir/ al apartado de documentación y le daremos a Downloads - Schemas, Code, Tools (https://hl7.org/fhir/downloads.html) y nos descargaremos un zip (https://hl7.org/fhir/fhir.schema.json.zip), que contiene un fhir.schema.json con toda la información del estándar de FHIR sobre cómo crear un json.
+	
+	Creamos un setting.json, que se relacione con el json descargado: 
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\textwidth]{image/3.png}
+		\caption{settings.json}
+		\label{fig:3}
+	\end{figure}
+	
+	Ahora cuando creemos un json nos aparecerán recomendaciones de los campos del estándar FHIR:
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\textwidth]{image/4.png}
+		\caption{VS recomienda estructuras del estándar de FHIR}
+		\label{fig:4}
+	\end{figure}
+	
+	En este caso escogemos el resourceType y ponemos el valor “Patient”, ya que queremos insertar un paciente en el servidor.
+	
+	Después de crear el json entero siguiendo el estándar para un json de FHIR:
+	
+	\begin{verbatim}
+		{
+			"resourceType": "Patient",
+			"name": [
+			{
+				"use": "official",
+				"given": ["Juan"],
+				"family": "Soriano"
+			}
+			],
+			"gender": "male",
+			"birthDate": "2003-09-08",
+			"telecom": [
+			{
+				"value": "987654310",
+				"use": "mobile",
+				"system": "phone"
+			},
+			{
+				"system": "email",
+				"value": "tornadoalert@gmail.com"
+			}
+			],
+			"address":[
+			{
+				"line":[
+				"213, Diamond Residency"
+				],
+				"city": "Málaga",
+				"state": "Andalucia",
+				"postalCode": "567104"
+			}
+			]
+		}
+	\end{verbatim}
+	\cite{HL7Patient}
+	
+	\subsubsection{Carga}
+	
+	Se dispondrá de un servidor dado por FHIR para la prueba:
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\textwidth]{image/5.png}
+		\caption{Servidor de FHIR}
+		\label{fig:5}
+	\end{figure}
+	\vspace{5cm}
+	
+	\cite{HAPI_FHIR}
+	Será a esta url \cite{HAPI_FHIR_Patient} a la que le lanzaremos un post para meter nuestro cliente en el servidor.
+	
+	Ponemos el json como cuerpo del mensaje.
+	Si hacemos una petición get a https://hapi.fhir.org/baseR4/Patient/45106909, nos devolverá nuestro paciente añadido:
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\textwidth]{image/6.png}
+		\caption{Resultado de la petición get}
+		\label{fig:6}
+	\end{figure}
+	
+	Como tal no hemos integrado los datos a un datawarehouse aplicando ETL, ya que no tenemos almacenes y no hacía falta aplicar ninguna codificación de los datos, pero probamos la efectividad del estándar FHIR  para integrar datos clínicos en un repositorio único o una base de datos.
+	
+	\subsection{Ejemplo con estándar HL7:}
+	
+	Para este ejemplo utilizaremos Mirth Connect, que es una plataforma de integración de datos clínicos ampliamente utilizada en el ámbito de la salud para facilitar la interoperabilidad entre sistemas. Permite que distintos sistemas de información en salud (como EHR, HIS, LIS, y Data Warehouses clínicos) intercambien y transformen datos de manera segura y eficiente\cite{meditecsMirthConnect}. 
+	Está diseñado para manejar datos en diversos formatos y estándares, como HL7, FHIR, X12, DICOM, y más, Mirth Connect permite transformar y adaptar los datos a los requisitos específicos de cada sistema, asegurando que se interpreten y utilicen de manera coherente\cite{meditecsMirthConnect}. 
+	
+	Mirth connect proporciona la posibilidad de crear canales para poder mandar mensajes de datos clínicos y cargarlos en un datawarehouse.
+	
+	En este caso, suponiendo que tenemos, ya extraída la información de un paciente siguiendo el estándar de mensajería de HL7, transformarlo y adaptar esa información, para integrarlo a una base de datos de mySQL, que simularía nuestro datawarehouse.
+	
+	Para el ejemplo crearemos una base de datos llamada patient, con una tabla paciente: 
+	
+	Haremos un query:
+	
+	\begin{verbatim}
+		CREATE DATABASE patient; 
+		USE patient;
+		CREATE TABLE pacientes (
+		id INT AUTO_INCREMENT PRIMARY KEY,
+		nombre VARCHAR(255) NOT NULL,
+		fecha_admision DATETIME NOT NULL,
+		diagnostico VARCHAR(255)
+		);
+	\end{verbatim}
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\textwidth]{image/7.png}
+		\caption{Script para feedback}
+		\label{fig:7}
+	\end{figure}
+	
+	\subsubsection{Fase de extracción y transformación}
+	
+	Este es el msg template utilizado con el estándar de HL7:
+	
+	\begin{verbatim}
+		MSH|^~\&|SendingApplication|SendingFacility|ReceivingApplication|ReceivingFacility|202310261200||ADT^A01|123456|P|2.5
+		EVN|A01|202310261200
+		PID|1||123456^^^Hospital^MR||Doe^John^||19800101|M|||
+		PV1|1|I|WardA^Room101^Hospital|U|1|1234^Smith^Jane^^Dr.| | | | |202310261200|
+		OBX|1|CE|DIAG^Diagnóstico||Hipertensión Arterial|||F
+	\end{verbatim}
+
+	Con este msg template, estamos avisando al canal que por él, mandaremos mensajes HL7 con esa estructura. 
+	
+	\subsubsection{Transformer HL7:}
+	El transformador nos ayudará a captar la información que nos interesa del mensaje HL7, y adaptarla a nuestra base de datos mySQL. Esta transformación se llevará a cabo mediante el siguiente script de java:
+	\begin{verbatim}[language=JAVA]
+		// Extraer datos del mensaje HL7
+		var pacienteNombre = msg['PID']['PID.5']['PID.5.2'].toString(); 
+		var diagnostico = msg['OBX']['OBX.5']['OBX.5.1'].toString();
+		
+		// Log para depuración
+		logger.info('Nombre: ' + pacienteNombre);
+		logger.info('Diagnóstico: ' + diagnostico);
+		
+		// Almacenar solo datos necesarios en un objeto temporal
+		var datosParaGuardar = {
+			'pacienteNombre': pacienteNombre,
+			'diagnostico': diagnostico
+		};
+		
+		// Log del objeto temporal
+		logger.info("Datos para guardar: " + JSON.stringify(datosParaGuardar));
+		
+		// Almacenar los datos extraídos en msg
+		msg['pacienteNombre'] = pacienteNombre;
+		msg['diagnostico'] = diagnostico;
+		
+		\subsubsection{Crear variables:}
+		Con esta creación de variables decimos al canal, que cada vez que mandemos un mensaje, guarde como variable los siguientes campos del mensaje HL7:
+		firstname
+		msg['PID']['PID.5']['PID.5.2'].toString()
+		diagnostico
+		msg['OBX']['OBX.5']['OBX.5.1'].toString()
+		
+		
+	\end{verbatim}
+	
+	\subsubsection{Carga}
+	
+	Configuracion de destination:
+	\begin{itemize}
+		\item `com.mysql.cj.jdbc.Driver`: Clase del controlador JDBC para MySQL.
+		\item `jdbc:mysql://127.0.0.1:3306/patient`: URL de conexión a la base de datos MySQL.
+	\end{itemize}
+	
+	En el script de destination, ponemos lo que se va a insertar.
+	
+	\begin{verbatim}
+	INSERT INTO pacientes (nombre, fecha_admision, diagnostico) 
+	VALUES (${nombre}, ${fecha_admision}, '${diagnostico}');
+	\end{verbatim}
+	
+	
+	
+	\begin{verbatim}
+	GRANT ALL PRIVILEGES ON *.* TO 'root'@'172.17.0.1' IDENTIFIED BY 'Venecia1234'
+	WITH GRANT OPTION;
+	FLUSH PRIVILEGES;
+	ALTER USER 'root'@'%' IDENTIFIED WITH mysql_native_password BY 'NuevaContraseña';
+	\end{verbatim}
+	
+	Ahora si enviamos a nuestro canal: 
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\textwidth]{image/8.png}
+		\caption{Mandar mensaje al canal}
+		\label{fig:8}
+	\end{figure}
+	
+	El siguiente mensaje:
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\textwidth]{image/9.png}
+		\caption{Confirmación de la inserción}
+		\label{fig:9}
+	\end{figure}
+	
+	Se confirma que en efecto se han captado los campos que nos interesaban: 
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\textwidth]{image/11.png}
+		\caption{Dato insertado en MySQL}
+		\label{fig:11}
+	\end{figure}
+	
+	Y como vemos queda insertado en: 
+	
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[width=0.8\textwidth]{image/10.png}
+		\caption{Mensaje HL7}
+		\label{fig:10}
+	\end{figure}
 	
 	\section{Conclusiones y Perspectivas Futuras en la Integración de Datos Clínicos}
 	Ofrece un resumen de los puntos más importantes y discute posibles desarrollos futuros en la interoperabilidad y los data warehouses clínicos.
