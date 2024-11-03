@@ -337,9 +337,9 @@
 	
 	Tipos de Carga:
 	\begin{itemize}
-		\item \textbf{Carga completa:} La primera vez que se cargan los datos al data warehouse, se hace de manera completa, es decir, se carga todo el histórico de datos clínicos.
+		\item \textbf{Carga completa:} La primera vez que se cargan los datos al data warehouse, se hace de manera completa, es decir, se carga todo el histórico de datos clínicos\cite{ESIC_DataWarehouse}.
 		
-		\item \textbf{Carga incremental:} Para actualizaciones periódicas, solo se cargan los datos nuevos o los que hayan sido modificados desde la última carga, optimizando el uso de recursos y el tiempo de carga.
+		\item \textbf{Carga incremental:} Para actualizaciones periódicas, solo se cargan los datos nuevos o los que hayan sido modificados desde la última carga, optimizando el uso de recursos y el tiempo de carga. \cite{ESIC_DataWarehouse}.
 	\end{itemize}
 	
 	\textbf{Ejemplo de Carga en Datos Clínicos:} Una vez que los registros de laboratorio han sido transformados y estandarizados, se insertan en el data warehouse en tablas relacionadas con los datos clínicos del paciente, como en una tabla de “Pruebas de Laboratorio”. El sistema puede configurarse para realizar cargas incrementales diarias, de forma que cualquier nuevo resultado de laboratorio se agregue automáticamente al data warehouse, permitiendo a los analistas y médicos consultar la información más reciente.
