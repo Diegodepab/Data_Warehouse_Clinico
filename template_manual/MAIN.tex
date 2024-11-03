@@ -122,7 +122,7 @@
 	
 	\subsubsection{HL7 (Health Level 7)} 
 	HL7 es uno de los estándares de interoperabilidad más utilizados en el ámbito clínico. Desarrollado por la organización Health Level Seven International. Permite el intercambio de datos entre aplicaciones de salud mediante mensajes estandarizados que contienen información crítica, como datos de pacientes, resultados de laboratorio y diagnósticos médicos. Es ampliamente adoptado en sistemas de salud debido a su capacidad para manejar grandes volúmenes de datos de forma eficaz. 
-	\vspace{5cm}
+	
 	
 	\textbf{Ejemplo de Uso de HL7:} Un hospital necesita compartir los resultados de laboratorio de un paciente con su proveedor de atención primaria. Utilizando HL7, los resultados de laboratorio se codifican en un mensaje HL7 que contiene los campos de información relevantes, como la identificación del paciente, el tipo de prueba realizada y los resultados numéricos de la prueba.
 	
@@ -254,7 +254,7 @@
 		\caption{5 puntos de la arquitectura del Data Warehouse: (1) Fuentes de Datos, (2) Carga (ETL), (3) Warehouse o almacenamiento, (4) Procesamiento y (5) Presentación.} % Asegúrate de cerrar el caption correctamente
 		\label{fig:Arqui}
 	\end{figure}
-	
+	\vspace{9cm}
 	
 	\begin{itemize}
 		\item \textbf{Capa de Fuentes de Datos:} Esta es la base del data warehouse y está compuesta por diversas fuentes de datos clínicas, como lo pueden ser:
@@ -432,6 +432,7 @@
 		}
 	\end{verbatim}
 	\cite{HL7Patient}
+	\vspace{4cm}
 	
 	\subsubsection{Carga}
 	
@@ -443,6 +444,7 @@
 		\caption{Servidor de FHIR \cite{HAPI_FHIR}}
 		\label{fig:5}
 	\end{figure}
+	
 	
 	Será a esta url \cite{HAPI_FHIR_Patient} a la que le lanzaremos un post para meter nuestro cliente en el servidor.
 	
