@@ -9,6 +9,7 @@
 \usepackage{verbatim}
 \usepackage[backend=bibtex,style=numeric]{biblatex} % Para citas numéricas
 \addbibresource{references.bib} % Cargar archivo .bib
+\usepackage{url}
 
 
 \usepackage{geometry}           % Para ajustar márgenes
@@ -105,24 +106,7 @@
 	
 	
 	
-	\subsection{Relevancia en el Manejo de Datos de Salud}
-
-	La relevancia de los data warehouses en el manejo de datos de salud radica en su capacidad para ofrecer un enfoque holístico y basado en datos en la atención médica. Algunos beneficios clave incluyen\cite{turcan2022}:
 	
-	\begin{itemize}
-		\item \textbf{Mejora en la Toma de Decisiones:} Los data warehouses permiten a los clínicos acceder a datos integrados y actualizados, lo que mejora la calidad de la atención al paciente. Con datos precisos y en tiempo real, los médicos pueden tomar decisiones informadas sobre diagnósticos y tratamientos.
-		
-		\item \textbf{Apoyo a la Investigación:} Los investigadores pueden utilizar los datos almacenados en un data warehouse para realizar estudios epidemiológicos, ensayos clínicos y análisis de resultados. La posibilidad de acceder a grandes volúmenes de datos clínicos facilita la identificación de tendencias y patrones que pueden mejorar la atención médica.
-		
-		\item \textbf{Análisis Predictivo:} Mediante técnicas de análisis de datos y minería de datos, los data warehouses permiten realizar predicciones sobre eventos futuros, como la probabilidad de readmisión de un paciente o la identificación de brotes de enfermedades. Esto puede resultar en intervenciones tempranas y mejor planificación de recursos.
-		
-		\item \textbf{Interoperabilidad:} La integración de datos de múltiples fuentes a través de un data warehouse fomenta la interoperabilidad entre sistemas de información de salud. Esto es fundamental en un entorno donde diferentes proveedores de atención médica utilizan diferentes sistemas y estándares para almacenar datos.
-		
-		\item \textbf{Cumplimiento Normativo y Reporte:} Los data warehouses permiten a las organizaciones de salud cumplir con las normativas y estándares de reporte, facilitando la generación de informes para entidades regulatorias y aseguradoras. Esto no solo mejora la transparencia, sino que también ayuda a las organizaciones a obtener financiamiento y soporte.
-		
-	\end{itemize}
-
-
 	
 	\section{Estándares de Interoperabilidad en Datos Clínicos}
 	
@@ -260,7 +244,7 @@
 	La arquitectura de un \textbf{data warehouse clínico} es fundamental para el análisis de datos de salud. Esta arquitectura se compone de varias capas que interactúan entre sí para garantizar que los datos sean accesibles, confiables y utilizables para la toma de decisiones clínicas. A continuación, se explican las capas y los componentes esenciales de esta arquitectura
 	
 	\subsection{Capas de la Arquitectura del Data Warehouse}
-
+	
 	La \textbf{Figura \ref{fig:Arqui}} ilustra una simplificación de la arquitectura típica de un data warehouse clínico se puede dividir en las siguientes capas:
 	
 	
@@ -331,13 +315,13 @@
 	\textbf{Ejemplo de Extracción en Datos Clínicos:} Un sistema de EHR contiene información de consultas médicas de pacientes en formato HL7. Para extraer esta información, el proceso ETL se conecta con el sistema de EHR mediante una interfaz segura y descarga los datos en formato HL7 V2 para luego proceder con la transformación.
 	
 	\subsection{Transformación}
-	La transformación es la etapa más compleja del proceso ETL, ya que implica la normalización y estandarización de los datos extraídos. Los datos clínicos suelen estar codificados en diferentes sistemas (ej., SNOMED CT, LOINC, ICD-10), por lo que el objetivo principal de esta fase es convertir estos datos en un formato común y unificado que permita su análisis conjunto. Esta etapa incluye varios subprocesos clave:
+	La transformación es la etapa más complicada del proceso ETL. Implica la normalización y estandarización de los datos extraídos. Los datos clínicos suelen estar codificados en diferentes sistemas (ej., SNOMED CT, LOINC, ICD-10) \cite{KeepCodingFaseTransformacion}.El objetivo principal será convertir estos datos en un formato común que permita su análisis conjunto. Esta etapa incluye varios subprocesos clave:
 	\begin{itemize}
-		\item \textbf{Estandarización de formatos:} Convertir los datos a un formato común, como JSON o CSV, y unificar estructuras y tipos de datos.
+		\item \textbf{Estandarización de formatos:} Convertir los datos a un formato común, como JSON o CSV, y unificar estructuras y tipos de datos.\cite{AsteraDataStandardization}. 
 		
-		\item \textbf{Normalización y limpieza de datos:} Corregir valores inconsistentes, eliminar duplicados y manejar valores nulos o faltantes.
+		\item \textbf{Normalización y limpieza de datos:} Corregir valores inconsistentes, eliminar duplicados y manejar valores nulos o faltantes. \cite{DatosMaestrosLimpiezaDatos}
 		
-		\item \textbf{Codificación:} Mapear términos médicos a un estándar de codificación unificado, como SNOMED CT para diagnósticos y LOINC para resultados de laboratorio.
+		\item \textbf{Codificación:} Mapear términos médicos a un estándar de codificación unificado, como SNOMED CT para diagnósticos y LOINC para resultados de laboratorio. \cite{ITDOSNOMEDCT}
 		
 		\item \textbf{Integración de datos:} Combinar datos de distintas fuentes en una estructura unificada, lo que puede implicar el mapeo de distintos campos de datos al mismo campo en el data warehouse.
 	\end{itemize}
@@ -345,6 +329,7 @@
 	\textbf{Ejemplo de Transformación en Datos Clínicos:} Imaginemos que se tienen registros de diferentes laboratorios en formatos y códigos distintos. Algunos laboratorios usan términos de texto libre para describir las pruebas de laboratorio, mientras que otros utilizan LOINC. En la fase de transformación, el proceso ETL asigna códigos LOINC a las pruebas descritas en texto libre y convierte todos los registros a un mismo formato de archivo (ej., JSON o CSV) para que puedan ser integrados en el data warehouse.
 	
 	Además, durante esta etapa, los datos de un paciente con identificadores distintos en cada sistema fuente se unen mediante un identificador único (como el número de historia clínica o ID de paciente en el hospital), consolidando así el historial del paciente.
+	
 	
 	\subsection{Carga}
 	
@@ -360,11 +345,19 @@
 	\textbf{Ejemplo de Carga en Datos Clínicos:} Una vez que los registros de laboratorio han sido transformados y estandarizados, se insertan en el data warehouse en tablas relacionadas con los datos clínicos del paciente, como en una tabla de “Pruebas de Laboratorio”. El sistema puede configurarse para realizar cargas incrementales diarias, de forma que cualquier nuevo resultado de laboratorio se agregue automáticamente al data warehouse, permitiendo a los analistas y médicos consultar la información más reciente.
 	
 	
-	\section{Beneficios de la Integración de Datos Clínicos}
-	Enumera y detalla los beneficios clave de un data warehouse clínico: mejora en la toma de decisiones, apoyo a la investigación, análisis predictivo, etc.
+	\section{Beneficios de la Integración de Estándares  Datos Clínicos}
+	
+	La integración de datos clínicos a través de un \textit{Data Warehouse} clínico ofrece múltiples beneficios para el manejo de la información sanitaria que han sido mencionadas anteriormente. Al centralizar los datos de diversas fuentes y garantizar su interoperabilidad mediante estándares como HL7 o FHIR, se facilita el acceso a información precisa y en tiempo real. Esto permite a los médicos y gestores de salud tomar decisiones más informadas y basadas en hechos, lo que mejora directamente la calidad de la atención. El uso de datos integrados también acelera la capacidad de realizar análisis avanzados, permitiendo a los sistemas de salud anticiparse a complicaciones, identificar tendencias en tiempo real y planificar de manera más eficiente los recursos sanitarios.
+	
+	Además, los \textit{Data Warehouses clínicos} ayudan a la investigación médica y el cumplimiento normativo. Al consolidar grandes volúmenes de datos en un formato estandarizado, los investigadores pueden realizar estudios más robustos, como análisis epidemiológicos o ensayos clínicos, que no solo apoyan la investigación científica sino que también permiten descubrir patrones que podrían mejorar las prácticas médicas. Asimismo, la capacidad de cumplir con las normativas y generar informes precisos para entidades regulatorias o aseguradoras se ve facilitada, promoviendo una mayor transparencia y control de calidad en la prestación de servicios médicos.
+	
 	
 	\section{Relación con el Curso de Almacenes de Datos}
-	Analiza cómo los conceptos de la asignatura, como modelado de datos, arquitecturas de data warehouse y técnicas de ETL, se aplican en el desarrollo de un data warehouse clínico.
+	
+	Durante el curso se ha proporcionado una base sólida sobre el manejo, diseño y uso de \textit{data warehouses}. Muchos de los conceptos aplicados en este trabajo, como la estructura multidimensional y los procesos ETL, están fundamentados en los conocimientos adquiridos en clase. Hemos aprendido a diferenciar entre los sistemas de bases de datos transaccionales (OLTP) y los almacenes de datos (OLAP), entendiendo cómo el cambio de paradigma, que se enfoca en agregar datos en lugar de actualizarlos o eliminarlos, permite crear una visión histórica completa. Esta visión es esencial en sistemas clínicos, donde el mantenimiento del historial íntegro de los datos de los pacientes es clave para mejorar el análisis, apoyar en la toma de decisiones, y avanzar en el cuidado de la salud.
+	
+	La experiencia de trabajar con \textit{data warehouses} durante el curso nos ha mostrado su relevancia directa en el ámbito de la salud. Aplicar técnicas como la extracción, transformación y carga (ETL) sobre datos clínicos reales permite a los ingenieros en salud centralizar y estructurar información médica de manera eficiente. Esto no solo facilita el análisis predictivo y la identificación de patrones en grandes volúmenes de datos clínicos, sino que también permite diseñar soluciones más efectivas para optimizar recursos en hospitales y mejorar el manejo de pacientes. Lo que en clase se aborda desde una perspectiva técnica, en el contexto clínico se traduce en herramientas que impactan directamente la calidad de la atención médica y la investigación científica.
+	
 	
 	\section{Ejemplos-Demo de Uso de Integración de Datos Clínicos con Estándares}
 	
@@ -607,8 +600,13 @@
 	
 	Y como vemos queda insertado el paciente John con Diabetes tipo 2 (utilizando el estándar de codificación de diagnóstico de SNOMED CT)
 	
-	\section{Conclusiones y Perspectivas Futuras en la Integración de Datos Clínicos y referencias}
-	Ofrece un resumen de los puntos más importantes y discute posibles desarrollos futuros en la interoperabilidad y los data warehouses clínicos.
+		\section{Conclusiones y Perspectivas Futuras en la Integración de Datos Clínicos y referencias}
+	
+	La integración de datos clínicos en un \textit{Data Warehouse} es una solución esencial para la centralización y reutilización de grandes volúmenes de información en el ámbito de la salud. A través del uso de estándares de interoperabilidad como \textit{HL7}, \textit{FHIR}, \textit{SNOMED CT} y \textit{LOINC}, se garantiza que los datos clínicos, provenientes de diversas fuentes, sean accesibles, consistentes y útiles para la toma de decisiones. Estos estándares permiten la comunicación entre distintos sistemas y aseguran que la información se mantenga precisa y estandarizada.
+	
+	El diseño de un \textit{Clinical Data Warehouse} (CDW) facilita el análisis de datos históricos, lo que no solo mejora la toma de decisiones clínicas, sino que también optimiza la planificación de recursos hospitalarios y promueve la investigación médica. Las distintas capas del CDW, desde la recopilación y transformación de los datos hasta su análisis y presentación, permiten un manejo eficiente de la información, lo que resulta en una atención médica de mayor calidad y en avances en la investigación basada en datos reales.
+	
+	De cara al futuro, se espera que la integración de datos clínicos continúe evolucionando, facilitando un acceso aún más eficiente a información crítica para mejorar la atención médica y avanzar en la medicina personalizada. Tecnologías emergentes como la inteligencia artificial y el análisis predictivo, combinadas con el acceso centralizado a datos estructurados, prometen transformar la gestión sanitaria y la investigación en salud, permitiendo una atención más personalizada, basada en datos y optimizada para resultados clínicos.
 	
 	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	\printbibliography
